@@ -11,5 +11,5 @@ export class OTP extends BaseEntity {
     @PrimaryColumn()
     id: string;
     @Column()
-    timestamp: string;
+    timestamp: number;
 }

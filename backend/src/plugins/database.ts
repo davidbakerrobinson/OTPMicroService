@@ -33,6 +33,8 @@ interface DBConfigOpts {
 	matches: Repository<Matches>,
 
 	messages: Repository<Messages>,
+
+	otpDatabase: Repository<OTP>,
 	connection: DataSource,
 }
 
