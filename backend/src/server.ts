@@ -9,6 +9,7 @@ import {getDirName} from "./lib/helpers";
 import logger from "./lib/logger";
 import {doggr_routes} from "./routes";
 import DbPlugin from "./plugins/database";
+import otpPlugin from "./plugins/otp";
 
 
 
@@ -43,6 +44,9 @@ export async function buildApp(useLogging: boolean) {
 		// Connects to postgres
 		app.log.info("Connecting to Database...");
 		await app.register(DbPlugin);
+
+		app.log.info("connecting otp plugin...");
+		app.register(otpPlugin);
 
 		app.log.info("App built successfully.");
 	} catch (err) {

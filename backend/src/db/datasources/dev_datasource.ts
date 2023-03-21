@@ -13,6 +13,7 @@ import { Matches1677293036162 } from "../migrations/1677293036162-Matches";
 import { Matches } from "../models/matches.js";
 import { Messages} from "../models/messages";
 import {Messages1677556209746} from "../migrations/1677556209746-Messages";
+import { OTP } from "../models/saved_otp";
 
 dotenv.config();
 
@@ -28,17 +29,10 @@ export const AppDataSource = new DataSource({
 	database: env.VITE_DB_NAME,
 	// entities are used to tell TypeORM which tables to create in the database
 	entities: [
-		User,
-		IPHistory,
-		Profile,
-		Matches,
-		Messages
+		OTP
 	],
 	migrations: [
-		Initialize1676281754950,
-		ProfilesMigration1676586883555,
-		Matches1677293036162,
-		Messages1677556209746
+
 	],
 	// DANGER DANGER our convenience will nuke production data!
 	synchronize: false

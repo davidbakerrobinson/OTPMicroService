@@ -9,6 +9,7 @@ import {AppDataSource} from "../db/datasources/dev_datasource";
 import {Profile} from "../db/models/profile";
 import {Matches} from "../db/models/matches";
 import {Messages} from "../db/models/messages";
+import { OTP } from "../db/models/saved_otp";
 
 /** This is AWESOME - we're telling typescript we're adding our own "thing" to base 'app', so we get FULL IDE/TS support */
 declare module 'fastify' {
@@ -50,12 +51,7 @@ const DbPlugin = fp(async (app: FastifyInstance, options: FastifyPluginOptions, 
 	// app.status(200).send()
 	// app.db.user
 	app.decorate("db", {
-		connection: dataSourceConnection,
-		user: dataSourceConnection.getRepository(User),
-		ip: dataSourceConnection.getRepository(IPHistory),
-		profile: dataSourceConnection.getRepository(Profile),
-		matches: dataSourceConnection.getRepository(Matches),
-		messages: dataSourceConnection.getRepository(Messages)
+		savedOTP: dataSourceConnection.getRepository(OTP)
 	});
 
 	done();
