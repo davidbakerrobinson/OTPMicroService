@@ -25,6 +25,7 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 		return reply.send(JSON.stringify({otp: OTPcode, randomString: randomString}));
 	});
 
+
 	app.post<{
 		Body: otpPostBody
 	}>("/validateOTP", async (request, reply: FastifyReply)=> {
@@ -62,10 +63,13 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 				}
 			});
 			await app.db.otpDatabase.delete(randomString);
-			return reply.status(200).send("Deleted");
+			if(otpEntry.validated === false) {
+				return reply.status(401).send("Deleted but not validated");
+			}
+			return reply.status(200).send("Deleted and Valid");
 		}
 		catch(err: any) {
-			return reply.status(401).send("Invalid");
+			return reply.status(401).send("Invalid, item not found");
 		}
 
 	});
