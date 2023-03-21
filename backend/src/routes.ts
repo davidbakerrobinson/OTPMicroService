@@ -53,10 +53,10 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 	});
 
 	app.delete<{
-		Params: DeleteParams
-	}>("/otpCode/:randomString", async (request, reply)=> {
+		Body: DeleteBody
+	}>("/otpCode", async (request, reply)=> {
 		try {
-			const { randomString } = request.params;
+			const { randomString } = request.body;
 			let otpEntry: OTP = await app.db.otpDatabase.findOneOrFail({
 				where: {
 					id: randomString
@@ -82,6 +82,6 @@ interface otpPostBody {
 	randomString: string
 }
 
-interface DeleteParams {
+interface DeleteBody {
 	randomString: string,
 }
