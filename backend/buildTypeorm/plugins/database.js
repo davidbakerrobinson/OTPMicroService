@@ -1,12 +1,8 @@
 /** @module DatabasePlugin */
 import "reflect-metadata";
 import fp from "fastify-plugin";
-import { User } from "../db/models/user.js";
-import { IPHistory } from "../db/models/ip_history.js";
 import { AppDataSource } from "../db/datasources/dev_datasource.js";
-import { Profile } from "../db/models/profile.js";
-import { Matches } from "../db/models/matches.js";
-import { Messages } from "../db/models/messages.js";
+import { OTP } from "../db/models/saved_otp.js";
 /**
  * Connects and decorates fastify with our Database connection
  * @function
@@ -18,12 +14,7 @@ const DbPlugin = fp(async (app, options, done) => {
     // app.status(200).send()
     // app.db.user
     app.decorate("db", {
-        connection: dataSourceConnection,
-        user: dataSourceConnection.getRepository(User),
-        ip: dataSourceConnection.getRepository(IPHistory),
-        profile: dataSourceConnection.getRepository(Profile),
-        matches: dataSourceConnection.getRepository(Matches),
-        messages: dataSourceConnection.getRepository(Messages)
+        otpDatabase: dataSourceConnection.getRepository(OTP)
     });
     done();
 }, {

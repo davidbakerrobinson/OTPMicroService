@@ -10,6 +10,7 @@ import logger from "./lib/logger";
 import {doggr_routes} from "./routes";
 import DbPlugin from "./plugins/database";
 import otpPlugin from "./plugins/otp";
+import cors from "@fastify/cors";
 
 
 
@@ -35,6 +36,19 @@ export async function buildApp(useLogging: boolean) {
 		await app.register(staticFiles, {
 			root: path.join(getDirName(import.meta), "../public"),
 			prefix: "/public/",
+		});
+
+		await app.register(cors, {
+			origin: (origin: any, cb: any) => {
+				const hostname = new URL(origin).hostname;
+				if (hostname === "localhost" || hostname === '127.0.0.1:8080' || hostname === process.env.IP_ADDRESS) {
+					//  Request from localhost will pass
+					cb(null, true);
+					return;
+				}
+				// Generate an error on other origins, disabling access
+				cb(new Error("Not allowed"), false);
+			}
 		});
 
 		// Adds all of our Router's routes to the app

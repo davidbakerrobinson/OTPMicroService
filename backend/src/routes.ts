@@ -18,7 +18,7 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 
 		// save it to a database
 		const newOTP = new OTP();
-		newOTP.timestamp = timestamp;
+		newOTP.timestamp = String(timestamp);
 		newOTP.id = randomString;
 
 		await newOTP.save();
@@ -38,7 +38,7 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 					id: randomString
 				}
 			});
-			let validOTP = app.otp.validate({token: otp, timestamp: otpEntry.timestamp});
+			let validOTP = app.otp.validate({token: otp, timestamp: Number(otpEntry.timestamp)});
 			if(validOTP === null) {
 				return reply.status(401).send("unauthorized");
 			} else {

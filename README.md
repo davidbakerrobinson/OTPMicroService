@@ -17,4 +17,4 @@ This is ONLY NEEDED during our initial development in-class!
 Once you clone the repository with the migrations already in it,
 you ONLY do the above!
 > pnpm typeorm:drop
-> pnpm migration:generate ./src/db/migrations/initialize.ts
+> pnpm migration:generate ./src/db/migrations/initialize

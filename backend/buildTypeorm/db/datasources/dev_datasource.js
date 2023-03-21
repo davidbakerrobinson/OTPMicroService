@@ -2,15 +2,8 @@
 import dotenv from "dotenv";
 import { DataSource } from 'typeorm';
 // Similar reasoning as above, we need to add the file extensions to this file's imports for CLI usage
-import { User } from "../models/user.js";
-import { IPHistory } from "../models/ip_history.js";
-import { Profile } from "../models/profile.js";
-import { Initialize1676281754950 } from "../migrations/1676281754950-Initialize.js";
-import { ProfilesMigration1676586883555 } from "../migrations/1676586883555-ProfilesMigration.js";
-import { Matches1677293036162 } from "../migrations/1677293036162-Matches.js";
-import { Matches } from "../models/matches.js";
-import { Messages } from "../models/messages.js";
-import { Messages1677556209746 } from "../migrations/1677556209746-Messages.js";
+import { Initialize1679385394309 } from "../migrations/1679385394309-Initialize.js";
+import { OTP } from "../models/saved_otp.js";
 dotenv.config();
 // @ts-ignore 
 const env = process.env;
@@ -23,17 +16,10 @@ export const AppDataSource = new DataSource({
     database: env.VITE_DB_NAME,
     // entities are used to tell TypeORM which tables to create in the database
     entities: [
-        User,
-        IPHistory,
-        Profile,
-        Matches,
-        Messages
+        OTP
     ],
     migrations: [
-        Initialize1676281754950,
-        ProfilesMigration1676586883555,
-        Matches1677293036162,
-        Messages1677556209746
+        Initialize1679385394309
     ],
     // DANGER DANGER our convenience will nuke production data!
     synchronize: false

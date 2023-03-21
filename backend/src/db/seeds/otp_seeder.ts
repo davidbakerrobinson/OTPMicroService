@@ -7,7 +7,7 @@ import * as randomstring from "randomstring";
 /**
  * UserSeeder class - Model class for interacting with "users" table
  */
-class otpSeeder extends Seeder {
+export class otpSeeder extends Seeder {
 	/**
      * Runs the IPHistory table's seed
      * @function
@@ -19,7 +19,8 @@ class otpSeeder extends Seeder {
 		// clear out whatever's already there
 		// note we cannot use .clear() because postgres cascade is bugged in Typeorm
 		// https://github.com/typeorm/typeorm/issues/1649
-		await app.db.user.delete({});
+		console.log(app.db.otpDatabase + "is the otpDatabase");
+		await app.db.otpDatabase.delete({});
 
 		for (let i = 0; i < 10; i++) {
 			let randString = randomstring.generate();
@@ -30,7 +31,7 @@ class otpSeeder extends Seeder {
 			console.log(otpCode + " is the otpCode");
 			let otp = new OTP();
 			otp.id = randString;
-			otp.timestamp = timestamp;
+			otp.timestamp = String(timestamp);
 			await otp.save();
 			app.log.info("Seeded otpCode " + i);
 		}

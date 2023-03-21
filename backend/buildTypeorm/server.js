@@ -8,6 +8,8 @@ import { getDirName } from "./lib/helpers.js";
 import logger from "./lib/logger.js";
 import { doggr_routes } from "./routes.js";
 import DbPlugin from "./plugins/database.js";
+import otpPlugin from "./plugins/otp.js";
+import cors from "@fastify/cors";
 /**
  * This is our main "Create App" function.  Note that it does NOT start the server, this only creates it
  * @function
@@ -29,12 +31,26 @@ export async function buildApp(useLogging) {
             root: path.join(getDirName(import.meta), "../public"),
             prefix: "/public/",
         });
+        await app.register(cors, {
+            origin: (origin, cb) => {
+                const hostname = new URL(origin).hostname;
+                if (hostname === "localhost" || hostname === '127.0.0.1' || hostname === process.env.IP_ADDRESS) {
+                    //  Request from localhost will pass
+                    cb(null, true);
+                    return;
+                }
+                // Generate an error on other origins, disabling access
+                cb(new Error("Not allowed"), false);
+            }
+        });
         // Adds all of our Router's routes to the app
         app.log.info("Registering routes");
         await app.register(doggr_routes);
         // Connects to postgres
         app.log.info("Connecting to Database...");
         await app.register(DbPlugin);
+        app.log.info("connecting otp plugin...");
+        app.register(otpPlugin);
         app.log.info("App built successfully.");
     }
     catch (err) {
