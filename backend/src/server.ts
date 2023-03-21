@@ -39,15 +39,9 @@ export async function buildApp(useLogging: boolean) {
 		});
 
 		await app.register(cors, {
-			origin: (origin: any, cb: any) => {
-				const hostname = new URL(origin).hostname;
-				if (hostname === "localhost" || hostname === '127.0.0.1:8080' || hostname === process.env.IP_ADDRESS) {
-					//  Request from localhost will pass
-					cb(null, true);
-					return;
-				}
-				// Generate an error on other origins, disabling access
-				cb(new Error("Not allowed"), false);
+			origin: (origin, cb) => {
+				console.log(`The origin is: ${origin}`);
+				cb(null, true);
 			}
 		});
 

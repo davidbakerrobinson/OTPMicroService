@@ -20,14 +20,17 @@ export async function doggr_routes(app) {
     app.post("/validateOTP", async (request, reply) => {
         //get params
         try {
-            const { otp, randomString } = request.body;
+            console.log(request.body);
+            const otp = request.body.otp;
+            const randomString = request.body.randomString;
             //look up entry based on randomString
             let otpEntry = await app.db.otpDatabase.findOneOrFail({
                 where: {
                     id: randomString
                 }
             });
-            let validOTP = app.otp.validate({ token: otp, timestamp: Number(otpEntry.timestamp) });
+            console.log(`OTP is ${otp} and randomString is: ${randomString}`);
+            let validOTP = app.otp.validate({ token: otp, timestamp: Number(otpEntry.timestamp), window: 1 });
             if (validOTP === null) {
                 return reply.status(401).send("unauthorized");
             }

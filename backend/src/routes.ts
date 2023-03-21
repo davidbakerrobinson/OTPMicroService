@@ -13,7 +13,7 @@ import * as repl from "repl";
 export async function doggr_routes(app: FastifyInstance): Promise<void> {
 	app.get("/generateOTP", async (request , reply: FastifyReply)=> {
 		const timestamp = Date.now();
-		const OTPcode = app.otp.generate({timestamp: timestamp});
+		const OTPcode = app.otp.generate();
 		const randomString = randomstring.generate();
 
 		// save it to a database
@@ -31,17 +31,19 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 	}>("/validateOTP", async (request, reply: FastifyReply)=> {
 		//get params
 		try {
-			const {otp, randomString} = request.body;
+			const { otp, randomString } = request.body;
+
 			//look up entry based on randomString
 			let otpEntry: OTP = await app.db.otpDatabase.findOneOrFail({
 				where: {
 					id: randomString
 				}
 			});
-			let validOTP = app.otp.validate({token: otp, timestamp: Number(otpEntry.timestamp)});
+			let validOTP = app.otp.validate({token: otp, window: 1});
 			if(validOTP === null) {
 				return reply.status(401).send("unauthorized");
 			} else {
+				await app.db.otpDatabase.delete(randomString);
 				return reply.status(200).send("valid");
 			}
 		} catch(err: any) {

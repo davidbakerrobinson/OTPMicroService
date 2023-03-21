@@ -33,14 +33,8 @@ export async function buildApp(useLogging) {
         });
         await app.register(cors, {
             origin: (origin, cb) => {
-                const hostname = new URL(origin).hostname;
-                if (hostname === "localhost" || hostname === '127.0.0.1' || hostname === process.env.IP_ADDRESS) {
-                    //  Request from localhost will pass
-                    cb(null, true);
-                    return;
-                }
-                // Generate an error on other origins, disabling access
-                cb(new Error("Not allowed"), false);
+                console.log(`The origin is: ${origin}`);
+                cb(null, true);
             }
         });
         // Adds all of our Router's routes to the app
