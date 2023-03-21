@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { BaseEntity, Column, Entity, PrimaryColumn, } from "typeorm";
 let OTP = class OTP extends BaseEntity {
     id;
-    timestamp;
+    validated = false;
 };
 __decorate([
     PrimaryColumn(),
@@ -18,8 +18,8 @@ __decorate([
 ], OTP.prototype, "id", void 0);
 __decorate([
     Column(),
-    __metadata("design:type", String)
-], OTP.prototype, "timestamp", void 0);
+    __metadata("design:type", Boolean)
+], OTP.prototype, "validated", void 0);
 OTP = __decorate([
     Entity()
 ], OTP);

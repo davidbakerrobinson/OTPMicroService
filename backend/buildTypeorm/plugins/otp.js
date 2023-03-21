@@ -6,7 +6,7 @@ const otpPlugin = fp(async (app, options, done) => {
         label: "otpBuddy",
         algorithm: "SHA1",
         digits: 6,
-        period: 15,
+        period: 300,
         secret: import.meta.env.VITE_OTP_SECRET, // or 'OTPAuth.Secret.fromBase32("NB2W45DFOIZA")'
     });
     app.decorate("otp", totp);

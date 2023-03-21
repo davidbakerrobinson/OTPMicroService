@@ -12,13 +12,12 @@ import * as repl from "repl";
  */
 export async function doggr_routes(app: FastifyInstance): Promise<void> {
 	app.get("/generateOTP", async (request , reply: FastifyReply)=> {
-		const timestamp = Date.now();
 		const OTPcode = app.otp.generate();
 		const randomString = randomstring.generate();
 
 		// save it to a database
 		const newOTP = new OTP();
-		newOTP.timestamp = String(timestamp);
+		newOTP.validated = false;
 		newOTP.id = randomString;
 
 		await newOTP.save();
@@ -43,12 +42,32 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 			if(validOTP === null) {
 				return reply.status(401).send("unauthorized");
 			} else {
-				await app.db.otpDatabase.delete(randomString);
+				otpEntry.validated = true;
+				await otpEntry.save();
 				return reply.status(200).send("valid");
 			}
 		} catch(err: any) {
 			return reply.status(401).send("unauthorized");
 		}
+	});
+
+	app.delete<{
+		Params: DeleteParams
+	}>("/otpCode/:randomString", async (request, reply)=> {
+		try {
+			const { randomString } = request.params;
+			let otpEntry: OTP = await app.db.otpDatabase.findOneOrFail({
+				where: {
+					id: randomString
+				}
+			});
+			await app.db.otpDatabase.delete(randomString);
+			return reply.status(200).send("Deleted");
+		}
+		catch(err: any) {
+			return reply.status(401).send("Invalid");
+		}
+
 	});
 }
 
@@ -57,4 +76,8 @@ export async function doggr_routes(app: FastifyInstance): Promise<void> {
 interface otpPostBody {
 	otp: string,
 	randomString: string
+}
+
+interface DeleteParams {
+	randomString: string,
 }

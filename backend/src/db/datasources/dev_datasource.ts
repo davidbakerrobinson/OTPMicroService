@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { DataSource } from 'typeorm';
 // Similar reasoning as above, we need to add the file extensions to this file's imports for CLI usage
 import { Initialize1679385394309} from "../migrations/1679385394309-Initialize";
+import { modifyOTP1679425438702} from "../migrations/1679425438702-modifyOTP";
 
 import { OTP } from "../models/saved_otp";
 
@@ -24,7 +25,8 @@ export const AppDataSource = new DataSource({
 		OTP
 	],
 	migrations: [
-		Initialize1679385394309
+		Initialize1679385394309,
+		modifyOTP1679425438702
 	],
 	// DANGER DANGER our convenience will nuke production data!
 	synchronize: false

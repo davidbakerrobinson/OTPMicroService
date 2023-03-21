@@ -24,14 +24,10 @@ export class otpSeeder extends Seeder {
 
 		for (let i = 0; i < 10; i++) {
 			let randString = randomstring.generate();
-			let timestamp = Date.now();
 			let otpCode = app.otp.generate();
-			console.log(randString+ " is the random string");
-			console.log(timestamp+" is the timestamp");
-			console.log(otpCode + " is the otpCode");
 			let otp = new OTP();
 			otp.id = randString;
-			otp.timestamp = String(timestamp);
+			otp.validated = false;
 			await otp.save();
 			app.log.info("Seeded otpCode " + i);
 		}
