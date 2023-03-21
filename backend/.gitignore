@@ -5,3 +5,4 @@ coverage/
 .fleet/
 .vscode/
 logs/
+buildTypeorm/
