@@ -5,6 +5,7 @@ import {Seeder} from "../../lib/seed_manager";
 import {ProfileSeed} from "./profile_seeder";
 import { MatchesSeed } from "./matches_seeder";
 import { MessageSeed } from "./messages_seeder";
+import { OTPSeeder} from "./otp_seeder";
 
 export type SeederOptionsType = {
 	seeds: Array<Seeder>;
@@ -19,7 +20,8 @@ const SeederOptions: any = {
 		IPHistorySeed,
 		ProfileSeed,
 		MatchesSeed,
-		MessageSeed
+		MessageSeed,
+		OTPSeeder
 	]
 };
 
